@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Button, Card, Col, Image, ListGroup, Row } from "react-bootstrap";
 import { toast } from "react-toastify";
@@ -11,7 +12,6 @@ import {
 } from "../slices/ordersApiSlice";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import { useEffect } from "react";
 
 const OrderScreen = () => {
   const { id: orderId } = useParams();
