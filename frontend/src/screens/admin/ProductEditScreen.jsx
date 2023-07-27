@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import {
   useGetProductDetailsQuery,
   useUpdateProductMutation,
+  useUploadProductImageMutation,
 } from "../../slices/productsApiSlice";
 import FormContainer from "../../components/FormContainer";
 import Loader from "../../components/Loader";
@@ -28,6 +29,8 @@ const ProductEditScreen = () => {
   } = useGetProductDetailsQuery(productID);
   const [updateProduct, { isLoading: loadingUpdate }] =
     useUpdateProductMutation();
+  const [uploadProductImage, { isLoading: loadingUpload }] =
+    useUploadProductImageMutation();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -63,6 +66,18 @@ const ProductEditScreen = () => {
     }
   };
 
+  const uploadFileHandler = async (e) => {
+    const formData = new FormData();
+    formData.append("image", e.target.files[0]);
+    try {
+      const res = await uploadProductImage(formData).unwrap();
+      toast.success(res.message);
+      setImage(res.image);
+    } catch (error) {
+      toast.error(error?.data?.message || error.error);
+    }
+  };
+
   return (
     <>
       <Link to="/admin/productlist" className="btn btn-light my-3">
@@ -95,7 +110,22 @@ const ProductEditScreen = () => {
                 onChange={(e) => setPrice(e.target.value)}
               ></Form.Control>
             </Form.Group>
-            {/* Image input placeholder goes here */}
+            <Form.Group controlId="image" className="my-2">
+              <Form.Label>Image</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter image url"
+                value={image}
+                onChange={(e) => setImage(e.target.value)}
+              ></Form.Control>
+              <Form.Control
+                type="file"
+                label="Choose file"
+                onChange={uploadFileHandler}
+                className="my-2"
+              ></Form.Control>
+              {loadingUpload && <Loader />}
+            </Form.Group>
             <Form.Group controlId="brand" className="my-2">
               <Form.Label>Brand</Form.Label>
               <Form.Control
