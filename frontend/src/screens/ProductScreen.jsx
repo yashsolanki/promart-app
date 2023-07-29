@@ -10,6 +10,7 @@ import {
   Row,
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import {
   useCreateReviewMutation,
   useGetProductDetailsQuery,
@@ -18,7 +19,6 @@ import { addToCart } from "../slices/cartSlice";
 import Rating from "../components/Rating";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import { toast } from "react-toastify";
 
 const ProductScreen = () => {
   const [qty, setQty] = useState(1);
