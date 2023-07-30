@@ -9,9 +9,9 @@ const SearchBox = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (keyword.trim()) {
+    if (keyword) {
+      navigate(`/search/${keyword.trim()}`);
       setKeyword("");
-      navigate(`/search/${keyword}`);
     } else {
       navigate("/");
     }
