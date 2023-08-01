@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { useLogoutMutation } from "../slices/usersApiSlice";
 import { logout } from "../slices/authSlice";
+import { resetCart } from "../slices/cartSlice";
 import logo from "../assets/logo.png";
 import SearchBox from "./SearchBox";
 
@@ -16,10 +17,11 @@ const Header = () => {
   const navigate = useNavigate();
   const [loginApiCall] = useLogoutMutation();
 
-  const logoutHandler = async (e) => {
+  const logoutHandler = async () => {
     try {
       await loginApiCall().unwrap();
       dispatch(logout());
+      dispatch(resetCart());
       navigate("/login");
     } catch (error) {
       toast.error(error?.data?.message || error.error);
@@ -66,6 +68,7 @@ const Header = () => {
                   </Nav.Link>
                 </LinkContainer>
               )}
+              {/* Admin Links */}
               {userInfo && userInfo.isAdmin && (
                 <NavDropdown title="Admin" id="adminmenu">
                   <LinkContainer to="/admin/productlist">
